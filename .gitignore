@@ -166,3 +166,6 @@ cython_debug/
 
 # Test database
 test.db
+
+# Secret files
+google_client_secret.json

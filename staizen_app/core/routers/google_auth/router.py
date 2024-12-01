@@ -6,7 +6,7 @@ from core.models.database import Session, get_db
 from core.schemas.request_schema import GenericUser
 from core.schemas.response_schema import AccountResponse, GenericResponse
 from core.dao.UserDAO import UserDAO
-from core.auth.auth_handler import encode_jwt, mask_user_id
+from core.auth.auth_handler import mask_user_id, create_access_token
 from utils.logger import log_execution_time, logger
 
 # Import services in the package
@@ -89,7 +89,7 @@ async def oauth2callback(request: Request, db: Session = Depends(get_db)):
         masked_user_id = mask_user_id(user_id)
 
         # Create JWT token
-        jwt_token = encode_jwt({"sub": user_id, "email": email})
+        jwt_token = create_access_token({"sub": f'{user_id}', "email": email})
 
         # Return token and user info
         logger.info(f'User {user.name} [{user.email}] is authenticated')

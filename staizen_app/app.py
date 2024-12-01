@@ -6,6 +6,7 @@ from utils.logger import logger
 
 # Import Services
 from core.routers.google_auth.router import google_services
+from core.routers.stream.router import stream
 
 tags_metadata = [
     {
@@ -39,6 +40,7 @@ async def read_root_endpoint():
 
 # Routers/Endpoints
 app.include_router(google_services)
+app.include_router(stream)
 
 
 logger.name = 'Root Project'
