@@ -7,14 +7,13 @@ from core.schemas.request_schema import GenericUser
 from core.schemas.response_schema import AccountResponse, GenericResponse
 from core.dao.UserDAO import UserDAO
 from core.auth.auth_handler import encode_jwt, mask_user_id
-from core.constants.constant import MOCK_REDIRECT_LINK
 from utils.logger import log_execution_time, logger
 
 # Import services in the package
 from .services.auth import init_flow
 
-google_services = APIRouter(prefix='/google/auth', tags=["Google Services"])
-
+# Initialize API rputer related to google auth
+google_services = APIRouter(prefix='/google/auth', tags=["Google Auth Services"])
 
 @google_services.get(
     "/login",
@@ -23,82 +22,14 @@ google_services = APIRouter(prefix='/google/auth', tags=["Google Services"])
     )
 @log_execution_time
 async def login(request: Request):
+    '''
+    Enables user to register or login through their google acccount.
+    '''
+
     flow = init_flow()
     auth_url, _ = flow.authorization_url(prompt="consent")
-    logger.info(f'----------- {auth_url}')
+    logger.info(f'Auth URL - {auth_url}')
     return RedirectResponse(auth_url)
-
-
-@google_services.get(
-    "/mock_login",
-    summary="Handles mocked user login through google auth",
-    response_model=GenericResponse
-    )
-@log_execution_time
-async def summary(request: Request):
-    return RedirectResponse(MOCK_REDIRECT_LINK)
-
-
-@google_services.post(
-    "/register",
-    summary="Handles user registration through google auth",
-    response_model=AccountResponse
-    )
-@log_execution_time
-async def register_user(request: Request, oauth_response: GenericUser, db: Session = Depends(get_db)):
-    dao = UserDAO(db)
-    existing_user = dao.get_user_by_email(oauth_response.email)
-    if existing_user:
-        message = 'User already registered'
-        user = existing_user.name
-        email = existing_user.email
-    else:
-        new_user = dao.create_user(GenericUser(name=oauth_response.name, email=oauth_response.email))
-        message = 'User registered successfully'
-        user = new_user.name
-        email = new_user.email
-
-    return JSONResponse(
-        status_code=200,
-        content={
-            "success": True,
-            "code": 200,
-            "message": message,
-            "data": {
-                "user": user,
-                "email": email,
-            }
-        }
-    )
-
-
-@google_services.post(
-    "/login_user",
-    summary="Handles user login through google auth",
-    response_model=GenericResponse
-    )
-@log_execution_time
-async def login_user(request: Request, oauth_response: GenericUser, db: Session = Depends(get_db)):
-    dao = UserDAO(db)
-    existing_user = dao.get_user_by_email(oauth_response.email)
-    if existing_user:
-        success = True
-        status_code = 200
-        message = 'Welcome Back!'
-    else:
-        success = False
-        status_code = 404
-        message = f'User not found please register through {request.base_url}google/register'
-
-    return JSONResponse(
-        status_code=status_code,
-        content={
-            "success": success,
-            "code": status_code,
-            "message": message,
-            "data": {}
-        }
-    )
 
 
 @google_services.get(
@@ -108,6 +39,10 @@ async def login_user(request: Request, oauth_response: GenericUser, db: Session 
     )
 @log_execution_time
 async def oauth2callback(request: Request, db: Session = Depends(get_db)):
+    '''
+    Callback function that process all google login/registration.
+    '''
+
     logger.info(f'Callback URL initiated {request.base_url}{request.url}')
     try:
         # Extract query parameters

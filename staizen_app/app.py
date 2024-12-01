@@ -5,11 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from utils.logger import logger
 
 # Import Services
-from core.routers.google.router import google_services
+from core.routers.google_auth.router import google_services
 
 tags_metadata = [
     {
-        "name": "Google Services",
+        "name": "Google Auth Services",
     },
     {
         "name": "Streaming",
