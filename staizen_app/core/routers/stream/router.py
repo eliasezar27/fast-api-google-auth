@@ -10,7 +10,7 @@ from utils.logger import log_execution_time, logger
 # Initialize API rputer related to google auth
 stream = APIRouter(prefix='/stream', tags=["Streaming"])
 
-@stream.get(
+@stream.post(
     "/stream_file",
     summary="Stream different uploaded files"
     )
