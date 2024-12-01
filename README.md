@@ -20,14 +20,14 @@ This project provides a FastAPI-based OAuth2 authentication service that integra
     ```bash
    cd fast-api-google-auth
    ```
-4. Copy and paste Oauth client file retrieved from `Google Cloud Platform > API & Services > Credentials` to the peoject root directory.
-5. Create your own `.env` file, use the `env.template` for reference.
-6. Create your Python environment
+3. Create your own `.env` file, use the `env.template` for reference.
+4. Copy and paste Oauth client file retrieved from `Google Cloud Platform > API & Services > Credentials` inside the `staizen_app` directory.
+5. Create your Python environment, ensure that your active path in the terminal is the root directory
     ```bash
     python -m venv venv # for winOS
     python3 -m venv venv # for macOS
     ```
-7. Install dependencies:
+6. Install dependencies:
     ```bash
    pip install -r requirements.txt
    ```
@@ -41,9 +41,9 @@ This project provides a FastAPI-based OAuth2 authentication service that integra
     ```bash
    cd fast-api-google-auth
    ```
-3. Copy and paste Oauth client file retrieved from `Google Cloud Platform > API & Services > Credentials` to the project root directory.
-4. Create your own `.env` file, use the `env.template` for reference.
-5. Run docker compose command
+3. Create your own `.env` file, use the `env.template` for reference.
+4. Copy and paste Oauth client file retrieved from `Google Cloud Platform > API & Services > Credentials` inside the `staizen_app` directory.
+5. Run docker compose command. Ensure that you are back in the root directory.
     ```bash
    docker-compose up --build -d
    ```
