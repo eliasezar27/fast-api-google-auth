@@ -21,6 +21,14 @@ This project provides a FastAPI-based OAuth2 authentication service that integra
    cd fast-api-google-auth
    ```
 3. Create your own `.env` file, use the `env.template` for reference.
+    e.g.
+    ```
+    SECRET_KEY=1234567890
+    ALGORITHM=HS256
+    DOMAIN=http://127.0.0.1:8080
+    GOOGLE_CLIENT_SECRET_FILE_PATH=secret.json
+    ACCESS_TOKEN_EXPIRE_MINUTES=240
+    ```
 4. Copy and paste Oauth client file retrieved from `Google Cloud Platform > API & Services > Credentials` inside the `staizen_app` directory.
 5. Create your Python environment, ensure that your active path in the terminal is the root directory
     ```bash
@@ -42,6 +50,14 @@ This project provides a FastAPI-based OAuth2 authentication service that integra
    cd fast-api-google-auth
    ```
 3. Create your own `.env` file, use the `env.template` for reference.
+    e.g.
+    ```
+    SECRET_KEY=1234567890
+    ALGORITHM=HS256
+    DOMAIN=http://127.0.0.1:8080
+    GOOGLE_CLIENT_SECRET_FILE_PATH=secret.json
+    ACCESS_TOKEN_EXPIRE_MINUTES=240
+    ```
 4. Copy and paste Oauth client file retrieved from `Google Cloud Platform > API & Services > Credentials` inside the `staizen_app` directory.
 5. Run docker compose command. Ensure that you are back in the root directory.
     ```bash
