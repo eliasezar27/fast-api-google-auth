@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 # Import services outside the package
 from core.models.database import Session, get_db
 from core.schemas.request_schema import GenericUser
-from core.schemas.response_schema import AccountResponse, GenericResponse
+from core.schemas.response_schema import GenericResponse, AuthData
 from core.dao.UserDAO import UserDAO
 from core.auth.auth_handler import mask_user_id, create_access_token
 from utils.logger import log_execution_time, logger
@@ -40,7 +40,7 @@ async def login(request: Request):
 @log_execution_time
 async def oauth2callback(request: Request, db: Session = Depends(get_db)):
     '''
-    Callback function that process all google login/registration.
+    Callback function that process login/registration and save user info in the database.
     '''
 
     logger.info(f'Callback URL initiated {request.base_url}{request.url}')
@@ -90,6 +90,11 @@ async def oauth2callback(request: Request, db: Session = Depends(get_db)):
 
         # Create JWT token
         jwt_token = create_access_token({"sub": f'{user_id}', "email": email})
+        auth_data = {
+            "access_token": jwt_token,
+            "token_type": "bearer",
+            "user_id": masked_user_id
+        }
 
         # Return token and user info
         logger.info(f'User {user.name} [{user.email}] is authenticated')
@@ -99,11 +104,7 @@ async def oauth2callback(request: Request, db: Session = Depends(get_db)):
                     "success": True,
                     "code": 200,
                     "message": f"User successfully authenticated!",
-                    "data": {
-                        "access_token": jwt_token,
-                        "token_type": "bearer",
-                        "user_id": masked_user_id
-                    }
+                    "data": AuthData(**auth_data).__dict__
                 }
             )
 

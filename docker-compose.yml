@@ -1,0 +1,22 @@
+version: "3.10"
+
+services:
+  python_backend:
+    container_name: staizen_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - WEB_CONCURRENCY=1
+    env_file:
+      - .env
+    working_dir: /app/staizen_app
+    expose: ["8080"]
+    command: "uvicorn app:app --host 0.0.0.0 --port 8080"
+    ports:
+      - "8080:8080"
+    networks:
+      - network_staizen_app
+
+networks:
+  network_staizen_app:

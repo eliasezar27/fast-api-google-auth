@@ -3,6 +3,9 @@ from core.constants.constant import GOOGLE_CLIENT_SECRET_FILE_PATH, SCOPES, DOMA
 
 
 def init_flow():
+    '''
+    Function that initializes Google Flow object.
+    '''
     return Flow.from_client_secrets_file(
         client_secrets_file=GOOGLE_CLIENT_SECRET_FILE_PATH,
         scopes=SCOPES,

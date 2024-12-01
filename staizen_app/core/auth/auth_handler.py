@@ -13,32 +13,42 @@ from core.dao.UserDAO import UserDAO
 # OAuth2 Dependency
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="google/auth/login")
 
-# Helper function to encode a JWT
-def encode_jwt(user_info, secret_key = SECRET_KEY, algorithm = ALGORITHM):
-    return jwt.encode(user_info, secret_key, algorithm=algorithm)
+def encode_jwt(info, secret_key = SECRET_KEY, algorithm = ALGORITHM):
+    '''
+    Helper function that encodes using jwt
+    '''
+    return jwt.encode(info, secret_key, algorithm=algorithm)
 
 
-# Helper function to decdoe a JWT
-def decode_jwt(user_info, secret_key = SECRET_KEY, algorithms = [ALGORITHM]):
-    return jwt.decode(user_info, secret_key, algorithms=algorithms)
+def decode_jwt(info, secret_key = SECRET_KEY, algorithms = [ALGORITHM]):
+    '''
+    Helper function that decodes using jwt
+    '''
+    return jwt.decode(info, secret_key, algorithms=algorithms)
 
 
-# Helper function to mask user_id
 def mask_user_id(user_id: int) -> str:
+    '''
+    Helper function that masks user ID
+    '''
     return encode_jwt({"user_id": user_id})
 
 
-# Helper function to unmask user_id
 def unmask_user_id(masked_id: str) -> int:
+    '''
+    Helper function that unmasks user ID
+    '''
     try:
-        payload = decode_jwt(masked_id, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = decode_jwt(masked_id,)
         return payload["user_id"]
     except JWTError:
         raise HTTPException(status_code=400, detail="Invalid masked user ID")
 
 
-# Function to decode the token and validate the user ID
-def verify_user_id(token: str, db: Session):
+def verify_user(token: str, db: Session):
+    '''
+    Function to decode the token and validate the user ID.
+    '''
     try:
         token = str(token)
         payload = decode_jwt(token)
@@ -68,12 +78,17 @@ def verify_user_id(token: str, db: Session):
         )
 
 
-# Dependency to get the current user
 def verify_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    return verify_user_id(token, db)
+    '''
+    Dependency function for verifying and validating token.
+    '''
+    return verify_user(token, db)
 
 
 def create_access_token(data: dict, expires_delta: Optional[datetime.timedelta] = None):
+    '''
+    Function that creates time limited token
+    '''
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.datetime.now(datetime.timezone.utc) + expires_delta

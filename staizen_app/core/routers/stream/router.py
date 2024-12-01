@@ -16,9 +16,9 @@ stream = APIRouter(prefix='/stream', tags=["Streaming"])
     )
 @log_execution_time
 async def upload_download(request: Request, file: UploadFile = File(...), current_user: dict = Depends(verify_current_user)):
-    """
+    '''
     Endpoint to upload a file and stream it back to the user via StreamingResponse.
-    """
+    '''
     logger.info(f"File: {file.filename} received!")
 
     try:

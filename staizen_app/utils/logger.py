@@ -34,9 +34,9 @@ logger.handlers = [stream_handler, file_handler]
 logger.setLevel(logging.INFO)
 
 def log_execution_time(func):
-    """
-    Logs execution time of a triggered route.
-    """
+    '''
+    Wrapper function that logs execution time of a triggered route.
+    '''
     
     @wraps(func)
     async def wrapper(request: Request = None, *args, **kwargs):
@@ -51,7 +51,7 @@ def log_execution_time(func):
             execution_time = end_time - start_time
             logger.error(f"Executed for: {execution_time:.4f} seconds")
             logger.error(f"Error: {str(e)}", exc_info=True)
-            raise e  # Re-raise the exception after logging it
+            raise e  # Re-raise the exception after logging execution time
         else:
             end_time = time.time()
             execution_time = end_time - start_time
