@@ -10,6 +10,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+# Define User Entity
 class User(Base):
     __tablename__ = "users"
 
@@ -19,7 +20,7 @@ class User(Base):
 
 Base.metadata.create_all(bind=engine)
 
-# Dependency
+# DB Dependency
 def get_db() -> Generator[Session, None, None]:
     '''
     This ensure routers has db connection.

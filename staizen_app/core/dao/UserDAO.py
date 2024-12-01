@@ -10,7 +10,7 @@ class UserDAO:
         return self.db.query(User).filter(User.email == email).first()
 
     def get_user_by_id(self, _id: int | str):
-        if isinstance(_id, str) and not id.isnumeric():
+        if isinstance(_id, str) and not _id.isnumeric():
             _id = int(_id)
         return self.db.query(User).filter(User.id == _id).first()
 
