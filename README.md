@@ -39,6 +39,11 @@ This project provides a FastAPI-based OAuth2 authentication service that integra
     ```bash
    pip install -r requirements.txt
    ```
+7. For running locally just execute the following:
+   ```bash
+   cd staizen_app
+   uvicorn app:app --host 127.0.0.1 --port 8080
+   ```
 
 ## Run in Docker (Local or in Server)
 1. Clone the repository:
