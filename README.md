@@ -34,6 +34,10 @@ This project provides a FastAPI-based OAuth2 authentication service that integra
     ```bash
     python -m venv venv # for winOS
     python3 -m venv venv # for macOS
+
+   # activate environment
+    venv/scripts/activate # for winOS powershell
+    source venv/source/activate # for macOS terminal
     ```
 6. Install dependencies:
     ```bash
